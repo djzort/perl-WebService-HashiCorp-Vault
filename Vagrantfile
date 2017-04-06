@@ -11,7 +11,7 @@ Vagrant.configure(2) do |config|
 
      # install what we need
      sudo apt-get update
-     sudo apt-get install unzip
+     sudo apt-get install unzip curl
      cd /tmp
      wget --no-check-certificate https://releases.hashicorp.com/vault/0.7.0/vault_0.7.0_linux_amd64.zip
      sudo mkdir -p /opt/vault/data
