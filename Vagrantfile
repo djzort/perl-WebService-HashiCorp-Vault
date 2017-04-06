@@ -16,7 +16,7 @@ Vagrant.configure(2) do |config|
      # use system perl for now
      # TODO use perlbrew, cpanm etc
      sudo apt-get install libmoo-perl
-     sudo apt-get install cpanminus libwww-perl make
+     sudo apt-get install cpanminus libwww-perl make libnamespace-clean-perl
      sudo cpanm WebService::Client
 
      cd /tmp
