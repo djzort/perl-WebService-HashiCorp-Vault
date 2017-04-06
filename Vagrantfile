@@ -27,6 +27,11 @@ Vagrant.configure(2) do |config|
     sudo systemctl start vault
     sudo systemctl enable vault
 
+    # dont do this in production, obviously
+    VAULT_ADDR='http://127.0.0.1:8200' /opt/vault/vault init > /opt/vault/vault-init.log
+    for i in `cat /opt/vault/vault-init.log  | grep 'Unseal Key' | sed 's/Unseal Key [1-5]: //'`; do VAULT_ADDR='http://127.0.0.1:8200' /opt/vault/vault unseal $i; done
+
+
     # finish up
     # sudo /vagrant/src/server/DEBIAN/postinst
    SHELL
