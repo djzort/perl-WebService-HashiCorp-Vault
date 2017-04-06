@@ -28,9 +28,11 @@ Vagrant.configure(2) do |config|
     sudo systemctl enable vault
 
     # dont do this in production, obviously
+    # TODO init with just one key, maybe put it in /etc/sysconfig/vault and have the vault.service file unseal?
     VAULT_ADDR='http://127.0.0.1:8200' /opt/vault/vault init > /opt/vault/vault-init.log
     for i in `cat /opt/vault/vault-init.log  | grep 'Unseal Key' | sed 's/Unseal Key [1-5]: //'`; do VAULT_ADDR='http://127.0.0.1:8200' /opt/vault/vault unseal $i; done
 
+    sudo -- sh -c "cat *log | grep 'Root Token' | sed 's/Initial Root Token: /export VAULT_TOKEN=/' >> /etc/profile.d/vault.sh"
 
     # finish up
     # sudo /vagrant/src/server/DEBIAN/postinst
