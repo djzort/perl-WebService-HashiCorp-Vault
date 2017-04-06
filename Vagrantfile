@@ -12,6 +12,13 @@ Vagrant.configure(2) do |config|
      # install what we need
      sudo apt-get update
      sudo apt-get install unzip curl jq
+
+     # use system perl for now
+     # TODO use perlbrew, cpanm etc
+     sudo apt-get install libmoo-perl
+     sudo apt-get install cpanminus libwww-perl make
+     sudo cpanm WebService::Client
+
      cd /tmp
      wget --no-check-certificate https://releases.hashicorp.com/vault/0.7.0/vault_0.7.0_linux_amd64.zip
      sudo mkdir -p /opt/vault/data
