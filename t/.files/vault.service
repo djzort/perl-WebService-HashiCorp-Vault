@@ -1,0 +1,22 @@
+[Unit]
+Description=Vault service
+After=network-online.target
+
+[Service]
+PrivateDevices=yes
+PrivateTmp=yes
+ProtectSystem=full
+ProtectHome=read-only
+SecureBits=keep-caps
+Capabilities=CAP_IPC_LOCK+ep
+CapabilityBoundingSet=CAP_SYSLOG CAP_IPC_LOCK
+NoNewPrivileges=yes
+ExecStart=/opt/vault/vault server -config=/opt/vault/vault.conf
+KillSignal=SIGINT
+TimeoutStopSec=30s
+Restart=on-failure
+StartLimitInterval=60s
+StartLimitBurst=3
+
+[Install]
+WantedBy=multi-user.target
