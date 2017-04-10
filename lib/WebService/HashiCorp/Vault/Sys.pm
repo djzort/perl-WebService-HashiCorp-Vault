@@ -6,16 +6,17 @@
 # And https://github.com/ianunruh/hvac
 # And https://www.vaultproject.io/api/index.html
 
-package WebService::HashiCorp::Vault;
+package WebService::HashiCorp::Vault::Sys;
 
 use Moo;
+# VERSION
 use namespace::clean;
 
 extends 'WebService::HashiCorp::Vault::Base';
 
 has '+mount' => ( is => 'ro', default => 'system' );
 
-sub system {
+sub sys {
     my $self = shift;
     my $name = shift;
     my %args = @_;

@@ -9,6 +9,7 @@
 package WebService::HashiCorp::Vault::Base;
 
 use Moo;
+# VERSION
 use namespace::clean;
 
 with 'WebService::Client';

@@ -9,12 +9,13 @@
 package WebService::HashiCorp::Vault;
 
 use Moo;
-use namespace::clean;
-
-use 'WebService::HashiCorp::Vault::Secret';
-use 'WebService::HashiCorp::Vault::System';
+# VERSION
 
 extends 'WebService::HashiCorp::Vault::Base';
+use namespace::clean;
+
+use WebService::HashiCorp::Vault::Secret;
+use WebService::HashiCorp::Vault::Sys;
 
 sub BUILD {
     my $self = shift;
@@ -29,11 +30,11 @@ sub secret {
     );
 }
 
-sub system {
+sub sys {
     my $self = shift;
     my %args = @_;
-    $args{mount} ||= 'system';
-    return WebService::HashiCorp::Vault::System->new(
+    $args{mount} ||= 'sys';
+    return WebService::HashiCorp::Vault::Sys->new(
     );
 }
 

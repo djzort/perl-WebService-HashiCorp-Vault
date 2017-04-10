@@ -6,9 +6,10 @@
 # And https://github.com/ianunruh/hvac
 # And https://www.vaultproject.io/api/index.html
 
-package WebService::HashiCorp::Vault;
+package WebService::HashiCorp::Vault::Secret;
 
 use Moo;
+# VERSION
 use namespace::clean;
 
 extends 'WebService::HashiCorp::Vault::Base';
