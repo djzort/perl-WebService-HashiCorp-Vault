@@ -22,20 +22,64 @@ sub BUILD {
     $self->ua->default_header('X-Vault-Token' => $self->token);
 }
 
+=encoding utf8
+
+=head1 SYNOPSIS
+
+ use WebService::HashiCorp::Vault;
+
+ my $vault = WebService::HashiCorp::Vault->new(
+     token => 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
+     base_url => 'http://127.0.0.1:8200', # optional, default shown
+     verson => 'v1', # optional, for future use if api changes
+
+ );
+
+ my $secret = $vault->secret();
+ my $sys    = $vault->sys();
+
+=head1 DESCRIPTION
+
+A perl API for convenience in using HashiCorp's Vault server software.
+
+=head1 METHODS
+
+=head2 secret
+
+ my $secret = $vault->secret(
+     mount => 'secret', # optional if mounted non-default
+ );
+
+Returns a L<WebService::HashiCorp::Vault::Secret> object, all ready to be used.
+
+=cut
+
 sub secret {
     my $self = shift;
     my %args = @_;
     $args{mount} ||= 'secret';
-    return WebService::HashiCorp::Vault::Secret->new(
-    );
+    $args{token} = $self->token();
+    $args{version} = $self->version();
+    return WebService::HashiCorp::Vault::Secret->new( %args );
 }
+
+=head2 sys
+
+ my $sys = $vault->sys(
+     mount => 'sys', # optional if mounted non-default
+ );
+
+Returns a L<WebService::HashiCorp::Vault::Sys> object, all ready to be used.
+
+=cut
 
 sub sys {
     my $self = shift;
     my %args = @_;
     $args{mount} ||= 'sys';
-    return WebService::HashiCorp::Vault::Sys->new(
-    );
+    $args{token} = $self->token();
+    $args{version} = $self->version();
+    return WebService::HashiCorp::Vault::Sys->new( %args );
 }
 
 1;
