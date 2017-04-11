@@ -17,7 +17,7 @@ with 'WebService::Client';
 has '+base_url' => ( default => 'http://127.0.0.1:8200' );
 has token => ( is => 'ro', required => 1 );
 has version => ( is => 'ro', default => 'v1' );
-has mount => ( is => 'ro', required => 1 );
+has mount => ( is => 'ro' );
 
 sub BUILD {
     my $self = shift;
