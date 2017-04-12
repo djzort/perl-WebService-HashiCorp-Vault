@@ -14,7 +14,7 @@ use Moo;
 extends 'WebService::HashiCorp::Vault::Base';
 use namespace::clean;
 
-use WebService::HashiCorp::Vault::Secret;
+use WebService::HashiCorp::Vault::Secret::Generic; # TODO add others
 use WebService::HashiCorp::Vault::Sys;
 
 sub BUILD {
@@ -48,19 +48,45 @@ A perl API for convenience in using HashiCorp's Vault server software.
 
  my $secret = $vault->secret(
      mount => 'secret', # optional if mounted non-default
+     backend => 'Generic', # or MySQL, or SSH, or whatever
  );
 
-Returns a L<WebService::HashiCorp::Vault::Secret> object, all ready to be used.
+Returns a L<WebService::HashiCorp::Vault::Secret::Generic> object, all ready to be used.
+Or whatever object based upon provided backend parameter.
 
 =cut
+
+{
+
+    my %backendmap = (
+        aws => 'AWS',
+        cassandra => 'Cassandra',
+        consul => 'Consul',
+        cubbyhole => 'Cubbyhole',
+        generic => 'Generic',
+        mongodb => 'MongoDB',
+        mssql => 'MsSQL',
+        mysql => 'MySQL',
+        pki => 'PKI',
+        postgresql => 'PostgreSQL',
+        rabbitmq => 'RabbitMQ',
+        ssh => 'SSH',
+        transit => 'Transit',
+    );
 
 sub secret {
     my $self = shift;
     my %args = @_;
-    $args{mount} ||= 'secret';
-    $args{token} = $self->token();
+    $args{token}   = $self->token();
     $args{version} = $self->version();
-    return WebService::HashiCorp::Vault::Secret->new( %args );
+    $args{backend} ||= 'generic';
+    die sprintf( "Unknown backend type: %s\n", $args{backend} )
+        unless $backendmap{ lc($args{backend}) };
+    my $class = 'WebService::HashiCorp::Vault::Secret::'
+              . $backendmap{ lc($args{backend}) };
+    return $class->new( %args );
+}
+
 }
 
 =head2 sys
