@@ -28,8 +28,6 @@ my $baz = $vault->secret( backed => 'generic', path => 'baz' );
 
 print Dumper $baz->data;
 
-my $newthing = $vault->secret( backed => 'generic', path => 'newthing' );
-$newthing->data( { hello => 'there', whats => 'yourname' } );
-
-$newthing->save;
-
+my $newthing = $vault->secret( backed => 'generic', path => 'newthing2' );
+$newthing->data( { hello => 'there', whats => 'yourname today', 'time' => time() } );
+# $newthing->delete();
