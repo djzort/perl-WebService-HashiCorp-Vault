@@ -14,7 +14,13 @@ use Moo;
 extends 'WebService::HashiCorp::Vault::Base';
 use namespace::clean;
 
-use WebService::HashiCorp::Vault::Secret::Generic; # TODO add others
+use WebService::HashiCorp::Vault::Secret::Cassandra;
+use WebService::HashiCorp::Vault::Secret::Generic;
+use WebService::HashiCorp::Vault::Secret::MongoDB;
+use WebService::HashiCorp::Vault::Secret::MSSQL;
+use WebService::HashiCorp::Vault::Secret::MySQL;
+use WebService::HashiCorp::Vault::Secret::PostgreSQL;
+use WebService::HashiCorp::Vault::Secret::RabbitMQ;
 use WebService::HashiCorp::Vault::Sys;
 
 sub BUILD {
