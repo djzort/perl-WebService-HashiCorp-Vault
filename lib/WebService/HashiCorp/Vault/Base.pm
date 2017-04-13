@@ -26,12 +26,13 @@ sub BUILD {
 
 sub _mkuri {
     my $self = shift;
+    use Data::Dumper;
     my @paths = @_;
     return join '/',
         $self->base_url,
         $self->version,
         $self->mount,
-        @paths;
+        @paths
 }
 
 1;

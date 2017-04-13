@@ -11,11 +11,12 @@ package WebService::HashiCorp::Vault::Secret::Generic;
 use Moo;
 # VERSION
 use namespace::clean;
+use HTTP::Request;
 
 extends 'WebService::HashiCorp::Vault::Base';
 
 has '+mount'  => ( is => 'ro', default => 'secret' );
-has 'path'  => ( is => 'ro', required => 1 );
+has 'path'  => ( is => 'ro' );
 has 'auth' => ( is => 'ro' );
 has 'data' => ( is => 'rw',
                 trigger => sub {
@@ -29,6 +30,7 @@ has 'renewable' => ( is => 'ro' );
 
 sub BUILD {
     my $self = shift;
+    return unless $self->path;
     $self->_clear_self();
     if (my $resp = $self->get( $self->_mkuri($self->path) )) {
         $self->{auth} = $resp->{auth}
@@ -114,6 +116,29 @@ sub _save {
     die sprintf( "Secret data must be hashref, not a %s\n", ref $data )
        if ref $data ne 'HASH';
     return $self->post( $self->_mkuri($self->path), $data );
+}
+
+=head2 list
+
+ my $list = $vault->secret( backend => 'generic' )->list();
+ my $list = $secret->list();
+
+Lists key names at the location
+
+=cut
+
+sub list {
+    my $self = shift;
+    # HashiCorp have decided that 'LIST' is a http verb, so we must hack it in
+    my $request = HTTP::Request->new(
+        'LIST' => $self->_mkuri(
+            $self->path ? $self->path : ()
+        )
+    );
+    # this is a WebService::Client internal function. I said hack!
+    return $self->req(
+        $request
+    );
 }
 
 1;
