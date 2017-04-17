@@ -171,6 +171,8 @@ sub leader {
     return $self->get( $self->_mkuri('leader') )
 }
 
+=for Pod::Coverage mount
+
 =head2 mounts
 
  my $mounts = $sys->mounts();

@@ -45,6 +45,8 @@ sub BUILD {
     }
 }
 
+=for Pod::Coverage BUILD
+
 =encoding utf8
 
 =head1 SYNOPSIS
@@ -74,6 +76,14 @@ The Generic Secret Backend handling for HashiCorps Vault server software.
 To be used via L<WebService::HashiCorp::Vault>.
 
 =head1 METHODS
+
+=head2 auth
+
+ my $auth = $backend->auth();
+
+B<Returns>
+
+The 'auth' field of the Vault servers response.
 
 =head2 data
 
@@ -118,6 +128,22 @@ sub _save {
     return $self->post( $self->_mkuri($self->path), $data );
 }
 
+=head2 lease_duration
+
+ my $ld = $backend->lease_duration();
+
+B<Returns>
+
+The 'lease_duration' field of the Vault servers response.
+
+=head2 lease_id
+
+ my $ld = $backend->lease_id();
+
+B<Returns>
+
+The 'lease_id' field of the Vault servers response.
+
 =head2 list
 
  my $list = $vault->secret( backend => 'generic' )->list();
@@ -140,5 +166,31 @@ sub list {
         $request
     );
 }
+
+=head2 path
+
+ my $obj = WebService::HashiCorp::Vault::Secret::Yours->new(
+  path => 'yours'
+ );
+
+ my $path = $obj->path();
+
+Provides the path where the Secret service instance is mounted.
+
+It is read-only once the object created.
+
+=head2 renewable
+
+ my $renewable = $backend->renewable();
+
+B<Returns>
+
+The 'renewable' field of the Vault servers response.
+
+=head1 SEE ALSO
+
+L<WebService::HashiCorp::Vault>
+
+=cut
 
 1;

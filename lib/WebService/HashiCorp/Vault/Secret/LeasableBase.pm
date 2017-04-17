@@ -21,13 +21,28 @@ has 'auth' => ( is => 'ro' );
 
 =head1 SYNOPSIS
 
- This base class is not intented to be used directly
+ package WebService::HashiCorp::Vault::Secret::Yours;
+ use Moo;
+ extends 'WebService::HashiCorp::Vault::Secret::LeasableBase';
+
+ my $obj = WebService::HashiCorp::Vault::Secret::Yours->new(
+   path => 'yours',
+   %others
+ );
 
 =head1 DESCRIPTION
 
- This base class is not intented to be used directly
+This base class is not intented to be used directly
 
 =head1 METHODS
+
+=head2 auth
+
+ my $auth = $backend->auth();
+
+B<Returns>
+
+The 'auth' field of the Vault servers response.
 
 =head2 creds
 
@@ -54,5 +69,23 @@ sub creds {
     my $name = shift or return;
     return $self->get( $self->_mkuri($self->path, $name) );
 }
+
+=head2 path
+
+ my $obj = WebService::HashiCorp::Vault::Secret::Yours->new(
+     path => 'yours'
+ );
+
+ my $path = $obj->path();
+
+Provides the path where the Secret service instance is mounted.
+
+It is read-only once the object created.
+
+=head1 SEE ALSO
+
+L<WebService::HashiCorp::Vault>
+
+=cut
 
 1;

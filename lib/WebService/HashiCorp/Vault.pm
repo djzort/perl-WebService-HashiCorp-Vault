@@ -28,6 +28,8 @@ sub BUILD {
     $self->ua->default_header('X-Vault-Token' => $self->token);
 }
 
+=for Pod::Coverage BUILD
+
 =encoding utf8
 
 =head1 SYNOPSIS
@@ -35,9 +37,9 @@ sub BUILD {
  use WebService::HashiCorp::Vault;
 
  my $vault = WebService::HashiCorp::Vault->new(
-     token => 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
+     token    => 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
      base_url => 'http://127.0.0.1:8200', # optional, default shown
-     verson => 'v1', # optional, for future use if api changes
+     verson   => 'v1', # optional, for future use if api changes
 
  );
 
@@ -69,8 +71,15 @@ Unfortunatly the "official" API's for other languages aren't much to go on. They
      backend => 'Generic', # or MySQL, or SSH, or whatever
  );
 
-Returns a L<Generic|WebService::HashiCorp::Vault::Secret::Generic> object, all ready to be used.
-Or whatever object based upon provided backend parameter.
+B<Parameters>
+
+=over 4
+
+=item mount
+
+A custom mount location if you have placed it somewhere other than the default.
+
+=item backend
 
 Here are the currently supported options:
 
@@ -92,24 +101,32 @@ Here are the currently supported options:
 
 =back
 
+=back
+
+B<Returns>
+
+A L<Generic|WebService::HashiCorp::Vault::Secret::Generic> object, all ready to be used.
+Or whatever object based upon provided backend parameter.
+
+
 =cut
 
 {
 
     my %backendmap = (
-        aws => 'AWS',
-        cassandra => 'Cassandra',
-        consul => 'Consul',
-        cubbyhole => 'Cubbyhole',
-        generic => 'Generic',
-        mongodb => 'MongoDB',
-        mssql => 'MsSQL',
-        mysql => 'MySQL',
-        pki => 'PKI',
+        aws        => 'AWS',
+        cassandra  => 'Cassandra',
+        consul     => 'Consul',
+        cubbyhole  => 'Cubbyhole',
+        generic    => 'Generic',
+        mongodb    => 'MongoDB',
+        mssql      => 'MsSQL',
+        mysql      => 'MySQL',
+        pki        => 'PKI',
         postgresql => 'PostgreSQL',
-        rabbitmq => 'RabbitMQ',
-        ssh => 'SSH',
-        transit => 'Transit',
+        rabbitmq   => 'RabbitMQ',
+        ssh        => 'SSH',
+        transit    => 'Transit',
     );
 
 sub secret {
@@ -133,7 +150,19 @@ sub secret {
      mount => 'sys', # optional if mounted non-default
  );
 
-Returns a L<WebService::HashiCorp::Vault::Sys> object, all ready to be used.
+B<Parameters>
+
+=over 4
+
+=item mount
+
+A custom mount location if you have placed it somewhere other than the default.
+
+=back
+
+B<Returns>
+
+A L<WebService::HashiCorp::Vault::Sys> object, all ready to be used.
 
 =cut
 
