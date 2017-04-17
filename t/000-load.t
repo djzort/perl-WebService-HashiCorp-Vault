@@ -1,8 +1,7 @@
 use warnings;
 use strict;
-use Test::More tests => 3;
+use Test::More tests => 2;
 
-BEGIN { use_ok( 'WebService::HashiCorp::Vault::Secret' ) or BAIL_OUT('unable to load module') }
 BEGIN { use_ok( 'WebService::HashiCorp::Vault::Sys' ) or BAIL_OUT('unable to load module') }
 BEGIN { use_ok( 'WebService::HashiCorp::Vault' ) or BAIL_OUT('unable to load module') }
 
