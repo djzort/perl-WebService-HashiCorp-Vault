@@ -48,6 +48,18 @@ sub BUILD {
 
 A perl API for convenience in using HashiCorp's Vault server software.
 
+Vault secures, stores, and tightly controls access to tokens, passwords, certificates, API keys, and other secrets in modern computing. Vault handles leasing, key revocation, key rolling, and auditing. Through a unified API, users can access an encrypted Key/Value store and network encryption-as-a-service, or generate AWS IAM/STS credentials, SQL/NoSQL databases, X.509 certificates, SSH credentials, and more. 
+
+=head1 ALPHA STATUS WARNING
+
+This API software is an Alpha release, which I am published for people to comment on and provide pull requests.
+
+The API will change as I try to come up with something that "feels right".
+
+So saying that, if something is strange, please send me feedback how it would be nicer!
+
+Unfortunatly the "official" API's for other languages aren't much to go on. They are barely more than a small wrapper around HTTP and JSON encoding/decoding.
+
 =head1 METHODS
 
 =head2 secret
@@ -57,8 +69,28 @@ A perl API for convenience in using HashiCorp's Vault server software.
      backend => 'Generic', # or MySQL, or SSH, or whatever
  );
 
-Returns a L<WebService::HashiCorp::Vault::Secret::Generic> object, all ready to be used.
+Returns a L<Generic|WebService::HashiCorp::Vault::Secret::Generic> object, all ready to be used.
 Or whatever object based upon provided backend parameter.
+
+Here are the currently supported options:
+
+=over 4
+
+=item L<Cassandra|WebService::HashiCorp::Vault::Secret::Cassandra>
+
+=item L<Generic|WebService::HashiCorp::Vault::Secret::Generic>
+
+=item L<MongoDB|WebService::HashiCorp::Vault::Secret::MongoDB>
+
+=item L<MSSQL|WebService::HashiCorp::Vault::Secret::MSSQL>
+
+=item L<MySQL|WebService::HashiCorp::Vault::Secret::MySQL>
+
+=item L<PostgreSQL|WebService::HashiCorp::Vault::Secret::PostgreSQL>
+
+=item L<RabbitMQ|WebService::HashiCorp::Vault::Secret::RabbitMQ>
+
+=back
 
 =cut
 
@@ -113,5 +145,11 @@ sub sys {
     $args{version} = $self->version();
     return WebService::HashiCorp::Vault::Sys->new( %args );
 }
+
+=head1 SEE ALSO
+
+L<Vault Project|https://www.vaultproject.io/>
+
+=cut
 
 1;
