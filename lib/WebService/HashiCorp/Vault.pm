@@ -21,14 +21,8 @@ use WebService::HashiCorp::Vault::Secret::MSSQL;
 use WebService::HashiCorp::Vault::Secret::MySQL;
 use WebService::HashiCorp::Vault::Secret::PostgreSQL;
 use WebService::HashiCorp::Vault::Secret::RabbitMQ;
+use WebService::HashiCorp::Vault::Secret::SSH;
 use WebService::HashiCorp::Vault::Sys;
-
-sub BUILD {
-    my $self = shift;
-    $self->ua->default_header('X-Vault-Token' => $self->token);
-}
-
-=for Pod::Coverage BUILD
 
 =encoding utf8
 
@@ -67,7 +61,7 @@ Unfortunatly the "official" API's for other languages aren't much to go on. They
 =head2 secret
 
  my $secret = $vault->secret(
-     mount => 'secret', # optional if mounted non-default
+     mount   => 'secret', # optional if mounted non-default
      backend => 'Generic', # or MySQL, or SSH, or whatever
  );
 
@@ -98,6 +92,8 @@ Here are the currently supported options:
 =item L<PostgreSQL|WebService::HashiCorp::Vault::Secret::PostgreSQL>
 
 =item L<RabbitMQ|WebService::HashiCorp::Vault::Secret::RabbitMQ>
+
+=item L<SSH|WebService::HashiCorp::Vault::Secret::SSH>
 
 =back
 
