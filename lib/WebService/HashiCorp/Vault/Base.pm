@@ -21,7 +21,13 @@ has mount => ( is => 'ro' );
 
 sub BUILD {
     my $self = shift;
-    $self->ua->default_header('X-Vault-Token' => $self->token);
+    $self->ua->default_header(
+        'X-Vault-Token' => $self->token,
+        'User_Agent'    => sprintf(
+            'WebService::HashiCorp::Vault %s (perl %s; %s)',
+            __PACKAGE__->VERSION,
+            $^V, $^O),
+    );
 }
 
 sub _mkuri {
@@ -34,8 +40,6 @@ sub _mkuri {
         $self->mount,
         @paths
 }
-
-1;
 
 =for Pod::Coverage BUILD
 
@@ -99,8 +103,38 @@ Read-only one the object is created.
 
 The mount location of the resource. There is no default, but you should apply one in your class that builds upon this class.
 
+=head2 list
+
+ my $list = $obj->list('path');
+
+HashiCorp have decided that 'LIST' is a http verb, so we must hack it in.
+
+You can pretend this is now a normal part of L<WebService::Client> upon which this module is based.
+
+=cut
+
+sub list {
+
+    my ($self, $path) = @_;
+
+    my $headers = $self->_headers();
+    my $url = $self->_url($path);
+
+    # HashiCorp have decided that 'LIST' is a http verb, so we must hack it in
+    my $req = HTTP::Request->new(
+        'LIST' => $url,
+        HTTP::Headers->new(%$headers)
+    );
+
+    # this is a WebService::Client internal function. I said hack!
+    return $self->req( $req );
+
+}
+
 =head1 SEE ALSO
 
 L<WebService::HashiCorp::Vault>
 
 =cut
+
+1;

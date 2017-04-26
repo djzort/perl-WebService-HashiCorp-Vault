@@ -11,7 +11,6 @@ package WebService::HashiCorp::Vault::Secret::Generic;
 use Moo;
 # VERSION
 use namespace::clean;
-use HTTP::Request;
 
 extends 'WebService::HashiCorp::Vault::Base';
 
@@ -155,16 +154,8 @@ Lists key names at the location
 
 sub list {
     my $self = shift;
-    # HashiCorp have decided that 'LIST' is a http verb, so we must hack it in
-    my $request = HTTP::Request->new(
-        'LIST' => $self->_mkuri(
-            $self->path ? $self->path : ()
-        )
-    );
-    # this is a WebService::Client internal function. I said hack!
-    return $self->req(
-        $request
-    );
+    my $result = $self->SUPER::list( $self->_mkuri($self->path || ()) );
+    return $result
 }
 
 =head2 path
