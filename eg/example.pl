@@ -3,22 +3,44 @@
 use strict;
 use warnings;
 
+use Data::Printer;
 use Data::Dumper;
 $Data::Dumper::Indent = 1;
 $Data::Dumper::Sortkeys = 1;
 
-use lib 'lib';
+# use lib 'lib';
 
 use WebService::HashiCorp::Vault;
 
-my $vault = WebService::HashiCorp::Vault->new( token => '94257c2a-a475-a301-cd33-2ead770de31b' );
+my $vault = WebService::HashiCorp::Vault->new(
+    token => '94257c2a-a475-a301-cd33-2ead770de31b'
+);
 
-print Dumper $vault;
+# print Dumper $vault;
 
+# my $sys = $vault->sys;
 
-my $list = $vault->secret( backend => 'generic' )->list;
+# p $sys->mounts;
 
-print Dumper $list;
+my $cubby = $vault->secret( backend => 'cubbyhole', path => 'cubbyhole' );
+
+$cubby->data({ hello => 'there' });
+
+p $cubby->data();
+
+warn "deleted";
+$cubby->delete();
+
+# p $cubby;
+
+warn "grab list of cubbyholes";
+my $list = $vault->secret( backend => 'cubbyhole' )->list;
+
+p $list;
+
+# my $list = $vault->secret( backend => 'generic' )->list;
+
+# p $list;
 
 
 __END__

@@ -15,6 +15,7 @@ extends 'WebService::HashiCorp::Vault::Base';
 use namespace::clean;
 
 use WebService::HashiCorp::Vault::Secret::Cassandra;
+use WebService::HashiCorp::Vault::Secret::Cubbyhole;
 use WebService::HashiCorp::Vault::Secret::Generic;
 use WebService::HashiCorp::Vault::Secret::MongoDB;
 use WebService::HashiCorp::Vault::Secret::MSSQL;
@@ -81,6 +82,8 @@ Here are the currently supported options:
 
 =item L<Cassandra|WebService::HashiCorp::Vault::Secret::Cassandra>
 
+=item L<Cubbyhole|WebService::HashiCorp::Vault::Secret::Cubbyhole>
+
 =item L<Generic|WebService::HashiCorp::Vault::Secret::Generic>
 
 =item L<MongoDB|WebService::HashiCorp::Vault::Secret::MongoDB>
@@ -112,6 +115,7 @@ Or whatever object based upon provided backend parameter.
     my %backendmap = (
         aws        => 'AWS',
         cassandra  => 'Cassandra',
+        cubbyhole  => 'Cubbyhole',
         consul     => 'Consul',
         cubbyhole  => 'Cubbyhole',
         generic    => 'Generic',

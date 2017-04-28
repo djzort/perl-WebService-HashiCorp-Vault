@@ -6,7 +6,7 @@
 # And https://github.com/ianunruh/hvac
 # And https://www.vaultproject.io/api/index.html
 
-package WebService::HashiCorp::Vault::Secret::Generic;
+package WebService::HashiCorp::Vault::Secret::Cubbyhole;
 
 use Moo;
 # VERSION
@@ -14,7 +14,7 @@ use namespace::clean;
 
 extends 'WebService::HashiCorp::Vault::Base';
 
-has '+mount'  => ( is => 'ro', default => 'secret' );
+has '+mount'  => ( is => 'ro', default => 'cubbyhole' );
 has 'path'  => ( is => 'ro' );
 has 'auth' => ( is => 'ro' );
 has 'data' => ( is => 'rw',
@@ -54,7 +54,7 @@ sub BUILD {
  my $vault->new(%args);
 
  # Grab or prepare to instantiate a secret 'path'
- my $foo = $vault->secret( backend => 'generic', path => 'foo' );
+ my $foo = $vault->secret( backend => 'cubbyhole', path => 'foo' );
 
  # Examine the data
  my $data = $foo->data();
@@ -71,7 +71,7 @@ sub BUILD {
 
 =head1 DESCRIPTION
 
-The Generic Secret Backend handling for HashiCorps Vault server software.
+The Cubbyhole Secret Backend handling for HashiCorps Vault server software.
 To be used via L<WebService::HashiCorp::Vault>.
 
 =head1 METHODS
@@ -145,7 +145,7 @@ The 'lease_id' field of the Vault servers response.
 
 =head2 list
 
- my $list = $vault->secret( backend => 'generic' )->list();
+ my $list = $vault->secret( backend => 'cubbyhole' )->list();
  my $list = $secret->list();
 
 Lists key names at the location
