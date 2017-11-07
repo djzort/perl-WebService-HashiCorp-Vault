@@ -63,6 +63,7 @@ Unfortunatly the "official" API's for other languages aren't much to go on. They
  my $secret = $vault->secret(
      mount   => 'secret', # optional if mounted non-default
      backend => 'Generic', # or MySQL, or SSH, or whatever
+     path    => 'my_service' # optional secret path
  );
 
 B<Parameters>
@@ -133,6 +134,7 @@ sub secret {
     my %args = @_;
     $args{token}   = $self->token();
     $args{version} = $self->version();
+    $args{path}    = $self->path();
     $args{backend} ||= 'generic';
     die sprintf( "Unknown backend type: %s\n", $args{backend} )
         unless $backendmap{ lc($args{backend}) };
