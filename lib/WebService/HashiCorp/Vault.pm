@@ -35,7 +35,6 @@ use WebService::HashiCorp::Vault::Sys;
      token    => 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
      base_url => 'http://127.0.0.1:8200', # optional, default shown
      version  => 'v1', # optional, for future use if api changes
-
  );
 
  my $secret = $vault->secret();
