@@ -34,7 +34,7 @@ use WebService::HashiCorp::Vault::Sys;
  my $vault = WebService::HashiCorp::Vault->new(
      token    => 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
      base_url => 'http://127.0.0.1:8200', # optional, default shown
-     verson   => 'v1', # optional, for future use if api changes
+     version  => 'v1', # optional, for future use if api changes
 
  );
 
