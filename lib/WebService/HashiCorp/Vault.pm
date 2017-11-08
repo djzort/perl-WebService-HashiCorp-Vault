@@ -61,9 +61,9 @@ Unfortunatly the "official" API's for other languages aren't much to go on. They
 =head2 secret
 
  my $secret = $vault->secret(
-     mount   => 'secret', # optional if mounted non-default
+     mount   => 'secret',  # optional if mounted non-default
      backend => 'Generic', # or MySQL, or SSH, or whatever
-     path    => 'my_service' # optional secret path
+     %other_args,          # other, backend specific arguments
  );
 
 B<Parameters>
@@ -100,6 +100,10 @@ Here are the currently supported options:
 
 =back
 
+=item other arguments
+
+See the documentation for the backend in question. Everything will pass through to the backend's constructor.
+
 =back
 
 B<Returns>
@@ -132,9 +136,10 @@ Or whatever object based upon provided backend parameter.
 sub secret {
     my $self = shift;
     my %args = @_;
-    $args{token}   = $self->token();
-    $args{version} = $self->version();
-    $args{path}    = $self->path();
+    $args{token}    = $self->token();
+    $args{version}  = $self->version();
+    $args{base_url} = $self->base_url();
+
     $args{backend} ||= 'generic';
     die sprintf( "Unknown backend type: %s\n", $args{backend} )
         unless $backendmap{ lc($args{backend}) };
@@ -170,9 +175,11 @@ A L<WebService::HashiCorp::Vault::Sys> object, all ready to be used.
 sub sys {
     my $self = shift;
     my %args = @_;
-    $args{mount} ||= 'sys';
-    $args{token} = $self->token();
-    $args{version} = $self->version();
+    $args{mount}    ||= 'sys';
+    $args{token}    = $self->token();
+    $args{version}  = $self->version();
+    $args{base_url} = $self->base_url();
+
     return WebService::HashiCorp::Vault::Sys->new( %args );
 }
 
