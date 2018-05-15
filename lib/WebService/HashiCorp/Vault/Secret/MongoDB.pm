@@ -42,7 +42,7 @@ To be used via L<WebService::HashiCorp::Vault>.
 
  Generates dynamic credentials based upon the named role
 
-B<Paramaters>
+B<Parameters>
 
 =over 4
 
