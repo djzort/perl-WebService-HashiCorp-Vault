@@ -139,6 +139,7 @@ sub secret {
     $args{token}    = $self->token();
     $args{version}  = $self->version();
     $args{base_url} = $self->base_url();
+    $args{ua}       = $self->ua();
 
     $args{backend} ||= 'generic';
     die sprintf( "Unknown backend type: %s\n", $args{backend} )
