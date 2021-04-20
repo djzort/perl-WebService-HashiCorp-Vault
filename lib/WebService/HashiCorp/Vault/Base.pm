@@ -15,11 +15,44 @@ use namespace::clean;
 with 'WebService::Client';
 
 has '+base_url' => ( default => 'http://127.0.0.1:8200' );
-has token => ( is => 'ro', required => 1 );
+has token => ( is => 'rw' );
+has token_expires => ( is => 'rw' );
+has approle => ( is => 'ro' );
 has version => ( is => 'ro', default => 'v1' );
 has mount => ( is => 'ro' );
 
-sub BUILD {
+before 'get' => sub {
+    $_[0]->_check_token;
+    $_[0]->_set_headers;
+};
+before 'post' => sub {
+    # Skip checking the token on a token request
+    if ($_[1] !~ m#auth/approle/login$#) {
+        $_[0]->_check_token;
+    }
+    $_[0]->_set_headers;
+};
+before 'put' => sub {
+    $_[0]->_check_token;
+    $_[0]->_set_headers;
+};
+before 'delete' => sub {
+    $_[0]->_check_token;
+    $_[0]->_set_headers;
+};
+
+sub _check_token {
+    my ($self) = @_;
+    if (!defined($self->token)) {
+        $self->_request_token;
+    }
+    ## Check the token and get a new one if required
+    if (defined($self->token_expires) && (time > $self->token_expires)) {
+        $self->_request_token;
+    }
+}
+
+sub _set_headers {
     my $self = shift;
     $self->ua->default_header(
         'X-Vault-Token' => $self->token,
@@ -38,6 +71,26 @@ sub _mkuri {
         $self->version,
         $self->mount,
         @paths
+}
+
+
+sub _request_token {
+    my $self = shift;
+
+    if (!defined($self->approle)) {
+        die("Must provide either token or approle");
+    }
+    if (!defined($self->approle->{role_id})) {
+        die("role_id missing in approle");
+    }
+    if (!defined($self->approle->{secret_id})) {
+        die("secret_id missing in approle");
+    }
+    my $url = (join '/', $self->base_url, $self->version, 'auth/approle/login');
+    my $resp =  $self->post( $url , $self->approle );
+    $self->{token} = $resp->{auth}->{client_token};
+    ## Set the expiry to 1 second before acutall expiry
+    $self->{token_expires} = time + $resp->{auth}->{lease_duration} - 1;
 }
 
 =for Pod::Coverage BUILD
@@ -77,7 +130,19 @@ Is read-only once you have created the object.
 
  my $token = $obj->token();
 
-The authentication token, is read-only after object is created.
+The authentication token.
+
+=head2 approle
+
+ my $obj = WebService::HashiCorp::Vault::Something->new(
+     approle => { 
+        client_id => 'xxxxxxx',
+        secret => 'xxxxx',
+     }
+ );
+
+
+The client approle.
 
 =head2 version
 
@@ -113,8 +178,10 @@ You can pretend this is now a normal part of L<WebService::Client> upon which th
 =cut
 
 sub list {
-
     my ($self, $path) = @_;
+
+    $self->_check_token;
+    $self->_set_headers;
 
     my $headers = $self->_headers();
     my $url = $self->_url($path);
