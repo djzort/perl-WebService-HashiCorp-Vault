@@ -136,6 +136,7 @@ Or whatever object based upon provided backend parameter.
 sub secret {
     my $self = shift;
     my %args = @_;
+    $args{approle}  = $self->approle();
     $args{token}    = $self->token();
     $args{version}  = $self->version();
     $args{base_url} = $self->base_url();
