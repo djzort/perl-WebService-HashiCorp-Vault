@@ -17,6 +17,7 @@ use namespace::clean;
 use WebService::HashiCorp::Vault::Secret::Cassandra;
 use WebService::HashiCorp::Vault::Secret::Cubbyhole;
 use WebService::HashiCorp::Vault::Secret::Generic;
+use WebService::HashiCorp::Vault::Secret::Kvv2;
 use WebService::HashiCorp::Vault::Secret::MongoDB;
 use WebService::HashiCorp::Vault::Secret::MSSQL;
 use WebService::HashiCorp::Vault::Secret::MySQL;
@@ -86,6 +87,8 @@ Here are the currently supported options:
 
 =item L<Generic|WebService::HashiCorp::Vault::Secret::Generic>
 
+=item L<Generic|WebService::HashiCorp::Vault::Secret::Kvv2>
+
 =item L<MongoDB|WebService::HashiCorp::Vault::Secret::MongoDB>
 
 =item L<MSSQL|WebService::HashiCorp::Vault::Secret::MSSQL>
@@ -123,6 +126,7 @@ Or whatever object based upon provided backend parameter.
         consul     => 'Consul',
         cubbyhole  => 'Cubbyhole',
         generic    => 'Generic',
+        kvv2       => 'Kvv2',
         mongodb    => 'MongoDB',
         mssql      => 'MsSQL',
         mysql      => 'MySQL',
