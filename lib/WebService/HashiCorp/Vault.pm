@@ -47,15 +47,15 @@ A perl API for convenience in using HashiCorp's Vault server software.
 
 Vault secures, stores, and tightly controls access to tokens, passwords, certificates, API keys, and other secrets in modern computing. Vault handles leasing, key revocation, key rolling, and auditing. Through a unified API, users can access an encrypted Key/Value store and network encryption-as-a-service, or generate AWS IAM/STS credentials, SQL/NoSQL databases, X.509 certificates, SSH credentials, and more.
 
-=head1 ALPHA STATUS WARNING
+=head1 BETA STATUS NOTICE
 
-This API software is an Alpha release, which I am published for people to comment on and provide pull requests.
+This API software is a I<Beta> release, which I am published for people to comment on and provide pull requests.
 
-The API will change as I try to come up with something that "feels right".
+I am now fairly happy with the API and am unlikely to make any drastic changes.
 
-So saying that, if something is strange, please send me feedback how it would be nicer!
+But if something feels strange, please send me feedback how it would be nicer!
 
-Unfortunatly the "official" API's for other languages aren't much to go on. They are barely more than a small wrapper around HTTP and JSON encoding/decoding.
+Alas, the "official" API's for other languages aren't much to go on. They are barely more than a small wrapper around HTTP and JSON encoding/decoding. I have tried to do better.
 
 =head1 METHODS
 
