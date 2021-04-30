@@ -16,39 +16,43 @@ with 'WebService::Client';
 
 has '+base_url' => ( default => 'http://127.0.0.1:8200' );
 has token => ( is => 'rw' );
-has token_expires => ( is => 'rw' );
+has _token_expires => ( is => 'rw' );
 has approle => ( is => 'ro' );
 has version => ( is => 'ro', default => 'v1' );
 has mount => ( is => 'ro' );
 
 before 'get' => sub {
-    $_[0]->_check_token;
-    $_[0]->_set_headers;
+    $_[0]->_check_token();
+    $_[0]->_set_headers();
 };
+
 before 'post' => sub {
     # Skip checking the token on a token request
     if ($_[1] !~ m#auth/approle/login$#) {
-        $_[0]->_check_token;
+        $_[0]->_check_token();
     }
-    $_[0]->_set_headers;
+    $_[0]->_set_headers();
 };
+
 before 'put' => sub {
-    $_[0]->_check_token;
-    $_[0]->_set_headers;
+    $_[0]->_check_token();
+    $_[0]->_set_headers();
 };
+
 before 'delete' => sub {
-    $_[0]->_check_token;
-    $_[0]->_set_headers;
+    $_[0]->_check_token();
+    $_[0]->_set_headers();
 };
 
 sub _check_token {
-    my ($self) = @_;
-    if (!defined($self->token)) {
-        $self->_request_token;
-    }
+    my $self = shift;
+
+    $self->_request_token()
+        unless defined $self->token;
+
     ## Check the token and get a new one if required
-    if (defined($self->token_expires) && (time > $self->token_expires)) {
-        $self->_request_token;
+    if (defined $self->_token_expires && (time > $self->_token_expires)) {
+        $self->_request_token()
     }
 }
 
@@ -77,20 +81,18 @@ sub _mkuri {
 sub _request_token {
     my $self = shift;
 
-    if (!defined($self->approle)) {
-        die("Must provide either token or approle");
-    }
-    if (!defined($self->approle->{role_id})) {
-        die("role_id missing in approle");
-    }
-    if (!defined($self->approle->{secret_id})) {
-        die("secret_id missing in approle");
-    }
-    my $url = (join '/', $self->base_url, $self->version, 'auth/approle/login');
+    die 'Must provide either token or approle'
+        unless defined $self->approle;
+    die 'role_id missing in approle'
+        unless defined $self->approle->{role_id};
+    die 'secret_id missing in approle'
+        unless defined $self->approle->{secret_id};
+
+    my $url  =  join('/', $self->base_url, $self->version, 'auth/approle/login');
     my $resp =  $self->post( $url , $self->approle );
     $self->{token} = $resp->{auth}->{client_token};
-    ## Set the expiry to 1 second before acutall expiry
-    $self->{token_expires} = time + $resp->{auth}->{lease_duration} - 1;
+    ## Set the expiry to 1 second before acutal expiry
+    $self->_token_expires(time + $resp->{auth}->{lease_duration} - 1);
 }
 
 =for Pod::Coverage BUILD
@@ -135,7 +137,7 @@ The authentication token.
 =head2 approle
 
  my $obj = WebService::HashiCorp::Vault::Something->new(
-     approle => { 
+     approle => {
         client_id => 'xxxxxxx',
         secret => 'xxxxx',
      }
