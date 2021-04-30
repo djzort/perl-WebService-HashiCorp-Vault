@@ -17,7 +17,7 @@ extends 'WebService::HashiCorp::Vault::Base';
 has '+mount'  => ( is => 'ro', default => 'secret' );
 has 'path'  => ( is => 'ro' );
 has 'auth' => ( is => 'ro' );
-has 'metadata' => ( is => 'ro' );
+has '_metadata' => ( is => 'ro' );
 has 'data' => ( is => 'rw',
                 trigger => sub {
                     my $self = shift;
@@ -35,8 +35,8 @@ sub BUILD {
     if (my $resp = $self->get( $self->_mkuri($self->path) )) {
         $self->{auth} = $resp->{auth}
             if $resp->{auth};
-        $self->{data} = $resp->{data}->{data}; # avoid tiggerng the trigger
-        $self->{metadata} = $resp->{data}->{metadata}; # avoid tiggerng the trigger
+        $self->{data} = $resp->{data}->{data}; # avoid triggering the trigger
+        $self->{_metadata} = $resp->{data}->{_metadata}; # avoid triggering the trigger
         $self->{lease_duration} = $resp->{lease_duration}
             if $resp->{lease_duration};
         $self->{lease_id} = $resp->{lease_id}
