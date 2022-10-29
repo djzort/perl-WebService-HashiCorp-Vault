@@ -11,7 +11,6 @@ package WebService::HashiCorp::Vault::Sys;
 use Moo;
 # VERSION
 use namespace::clean;
-
 extends 'WebService::HashiCorp::Vault::Base';
 
 has '+mount' => ( is => 'ro', default => 'sys' );
@@ -47,14 +46,43 @@ Returns the 'audit' of the vault from API location I</sys/audit>
 
 The result is a hash reference
 
-TODO: implement PUT and DELETE audit with this function
-
 =cut
 
 sub audit {
     my $self = shift;
     return $self->get( $self->_mkuri('audit') )
 }
+
+=head2 audit_put
+
+ my $audit = $sys->audit($audit_device, %options);
+
+Add an audit device.
+Returns true (1) if it succeeds, false (0) other wise.
+
+=cut
+
+sub audit_put {
+    my ( $self, $name, %params ) = @_;
+    return $self-_sys_put( 'audit', $name, %params );
+
+}
+
+
+=head2 audit_del
+
+ my $audit = $sys->auth_del($audit_device);
+
+Delete an audit device.
+
+=cut
+
+sub audit_del {
+    my ( $self, $name ) = @_;
+    return $self-_sys_del( 'audit', $name );
+}
+
+
 
 #            <a href="/api/system/audit-hash.html"><tt>/sys/audit-hash</tt></a>
 #
@@ -67,16 +95,61 @@ sub audit {
 
 Returns the 'auth' of the vault from API location I</sys/auth>
 
-The result is a hash reference
+The result is a hash reference 
 
-TODO: implement POST and DELETE auth with this function
 
 =cut
 
 sub auth {
     my $self = shift;
-    return $self->get( $self->_mkuri('auth') )
+    return $self->get( $self->_mkuri('auth') );
 }
+
+=head2 auth_put
+
+ my $audit = $sys->auth($auth_method, %options);
+
+Add an Auth method
+Returns true (1) if it succeeds, false (0) other wise.
+
+=cut
+
+sub auth_put {
+    my ( $self, $name, %params ) = @_;
+    return $self-_sys_put( 'audit', $name, %params );
+
+}
+
+=head2 auth_del
+
+ my $audit = $sys->auth_del($audit_device);
+
+Delete an auth method.
+
+=cut
+
+sub auth_del {
+    my ( $self, $name ) = @_;
+    return $self-_sys_del( 'audit', $name );
+}
+
+#
+# Internal functions to do the put/del actions.
+#
+sub _sys_put {
+    my ( $self, $sys_type, $name, %params ) = @_;
+    my $uri = join '/', $self->_mkuri($sys_type), $name;
+    return $self->post( $uri, \%params );
+
+}
+
+sub _sys_del {
+    my ( $self, $sys_type, $name ) = @_;
+    my $uri = join '/', $self->_mkuri($sys_type), $name;
+    return $self->delete( $uri );
+
+}
+
 
 #            <a href="/api/system/capabilities.html"><tt>/sys/capabilities</tt></a>
 #
@@ -91,7 +164,6 @@ sub auth {
 #
 #
 #            <a href="/api/system/generate-root.html"><tt>/sys/generate-root</tt></a>
-
 =head2 generate_root
 
  my $generate-root = $sys->generate-root();
