@@ -8,19 +8,73 @@ use Data::Dumper;
 $Data::Dumper::Indent = 1;
 $Data::Dumper::Sortkeys = 1;
 
-# use lib 'lib';
+use lib 'lib';
 
 use WebService::HashiCorp::Vault;
 
 my $vault = WebService::HashiCorp::Vault->new(
-    token => '94257c2a-a475-a301-cd33-2ead770de31b'
+    token => 'hvs.k2Kcx2LWi6N1K71C2Q7mC6td'
 );
 
 # print Dumper $vault;
 
-# my $sys = $vault->sys;
+my $sys = $vault->sys;
 
-# p $sys->mounts;
+my $audits = $sys->audit;
+my @keys;
+for my $key (keys %{$audits->{data}}) {
+    next if $key eq 'audit_name/';
+    $key =~ s!\/$!!;
+    push @keys, $key;
+}
+
+if (!$audits->{data}{"goat/"}) {
+    print "About to add audit goat\n";
+    $sys->audit_put('goat', type => 'file', options => {file_path  => '/tmp/goat'});
+}
+
+
+$audits = $sys->audit;
+
+if ($audits->{data}{"goat/"}) {
+    print "Either we added goat or it was there already\n";
+}
+
+$sys->audit_del('goat');
+
+$audits = $sys->audit;
+
+if (!$audits->{data}{"goat/"}) {
+    print   " Deleted goat\n";
+}
+my $auths = $sys->auth;
+
+for my $key (keys %{$auths->{data}}) {
+    next if $key eq 'auth_name/';
+    $key =~ s!\/$!!;
+    push @keys, $key;
+}
+
+if (!$auths->{data}{"goat/"}) {
+    print "About to add auth goat\n";
+    $sys->auth_put('goat', type => 'file', options => {file_path  => '/tmp/goat'});
+}
+
+
+$auths = $sys->auth;
+
+if ($auths->{data}{"goat/"}) {
+    print "Either we added goat or it was there already\n";
+}
+
+$sys->auth_del('goat');
+
+$auths = $sys->auth;
+
+if (!$auths->{data}{"goat/"}) {
+    print   " Deleted goat\n";
+}
+
 
 my $cubby = $vault->secret( backend => 'cubbyhole', path => 'cubbyhole' );
 
