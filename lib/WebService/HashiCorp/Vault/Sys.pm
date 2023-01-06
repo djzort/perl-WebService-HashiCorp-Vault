@@ -64,7 +64,7 @@ Returns true (1) if it succeeds, false (0) other wise.
 
 sub audit_put {
     my ( $self, $name, %params ) = @_;
-    return $self-_sys_put( 'audit', $name, %params );
+    return $self->_sys_put( 'audit', $name, %params );
 
 }
 
@@ -79,7 +79,7 @@ Delete an audit device.
 
 sub audit_del {
     my ( $self, $name ) = @_;
-    return $self-_sys_del( 'audit', $name );
+    return $self->_sys_del( 'audit', $name );
 }
 
 
@@ -116,7 +116,7 @@ Returns true (1) if it succeeds, false (0) other wise.
 
 sub auth_put {
     my ( $self, $name, %params ) = @_;
-    return $self-_sys_put( 'audit', $name, %params );
+    return $self->_sys_put( 'audit', $name, %params );
 
 }
 
@@ -130,7 +130,7 @@ Delete an auth method.
 
 sub auth_del {
     my ( $self, $name ) = @_;
-    return $self-_sys_del( 'audit', $name );
+    return $self->_sys_del( 'audit', $name );
 }
 
 #
