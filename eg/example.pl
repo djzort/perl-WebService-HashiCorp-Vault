@@ -12,11 +12,12 @@ use lib 'lib';
 
 use WebService::HashiCorp::Vault;
 
-my $vault = WebService::HashiCorp::Vault->new(
-    token => 'hvs.k2Kcx2LWi6N1K71C2Q7mC6td'
-);
+my $TOKEN = $ENV{VAULT_ROOT_TOKEN_ID};
+die "Please set your root token" if ! $TOKEN;
 
-# print Dumper $vault;
+my $vault = WebService::HashiCorp::Vault->new(token => $TOKEN);
+
+die "Couldn't open vault" if !$vault;
 
 my $sys = $vault->sys;
 
