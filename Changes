@@ -1,5 +1,10 @@
 WebService::HashiCorp::Vault - perl API for HashiCorp's Vault
 
+0.02 2022-01-13
+- Add put/delete functions to auth and audit PR#12 thanks to @yewtc
+- Correct pod from GH#10
+- Rename TEST_AUTHOR to AUTHOR_TESTING for GH#13
+
 0.01 2021-4-29
 - Add AppRole auth support PR#7 thanks to @amishHammer
 - Add KV version 2 support PR#6 thanks to @amishHammer
