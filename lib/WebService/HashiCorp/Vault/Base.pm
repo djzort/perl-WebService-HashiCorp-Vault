@@ -138,8 +138,8 @@ The authentication token.
 
  my $obj = WebService::HashiCorp::Vault::Something->new(
      approle => {
-        client_id => 'xxxxxxx',
-        secret => 'xxxxx',
+        role_id   => 'xxxxxxx',
+        secret_id => 'xxxxx',
      }
  );
 
