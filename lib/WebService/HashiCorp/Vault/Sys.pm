@@ -95,8 +95,7 @@ sub audit_del {
 
 Returns the 'auth' of the vault from API location I</sys/auth>
 
-The result is a hash reference 
-
+The result is a hash reference
 
 =cut
 
