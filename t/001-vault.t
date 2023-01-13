@@ -3,9 +3,9 @@ use strict;
 use Test::More;
 use WebService::HashiCorp::Vault;
 
-if (not $ENV{TEST_AUTHOR}) {
+if (not $ENV{AUTHOR_TESTING}) {
     plan skip_all =>
-        'Author test. Set $ENV{TEST_AUTHOR} to a true value to run.';
+        'Author test. Set $ENV{AUTHOR_TESTING} to a true value to run.';
 } else {
     plan tests => 9;
 }
