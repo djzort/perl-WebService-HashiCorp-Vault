@@ -32,11 +32,11 @@ sub BUILD {
     my $self = shift;
     return unless $self->path;
     $self->_clear_self();
-    if (my $resp = $self->get( $self->_mkuri($self->path) )) {
+    if (my $resp = $self->get( $self->_mkuri('data',$self->path) )) {
         $self->{auth} = $resp->{auth}
             if $resp->{auth};
         $self->{data} = $resp->{data}->{data}; # avoid triggering the trigger
-        $self->{_metadata} = $resp->{data}->{_metadata}; # avoid triggering the trigger
+        $self->{_metadata} = $resp->{data}->{metadata}; # avoid triggering the trigger
         $self->{lease_duration} = $resp->{lease_duration}
             if $resp->{lease_duration};
         $self->{lease_id} = $resp->{lease_id}
@@ -52,7 +52,7 @@ sub _mkuri {
     return join '/',
         $self->base_url,
         $self->version,
-        $self->mount, 'data',
+        $self->mount,
         @paths
 }
 =for Pod::Coverage BUILD
@@ -125,7 +125,7 @@ The secret path and server details are retained so you can delete then save data
 
 sub delete {
     my $self = shift;
-    my $result = $self->SUPER::delete( $self->_mkuri($self->path) );
+    my $result = $self->SUPER::delete( $self->_mkuri('data', $self->path) );
     $self->_clear_self();
     return $result
 }
@@ -135,7 +135,7 @@ sub _save {
     my $data = shift;
     die sprintf( "Secret data must be hashref, not a %s\n", ref $data )
        if ref $data ne 'HASH';
-    return $self->post( $self->_mkuri($self->path), { data => $data } );
+    return $self->post( $self->_mkuri('data', $self->path), { data => $data } );
 }
 
 =head2 lease_duration
@@ -165,7 +165,7 @@ Lists key names at the location
 
 sub list {
     my $self = shift;
-    my $result = $self->SUPER::list( $self->_mkuri($self->path || ()) );
+    my $result = $self->SUPER::list( $self->_mkuri('metadata', $self->path || ()) );
     return $result->{data}
 }
 
