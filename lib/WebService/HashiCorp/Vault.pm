@@ -87,7 +87,7 @@ Here are the currently supported options:
 
 =item L<Generic|WebService::HashiCorp::Vault::Secret::Generic>
 
-=item L<Generic|WebService::HashiCorp::Vault::Secret::Kvv2>
+=item L<Kvv|WebService::HashiCorp::Vault::Secret::Kvv2>
 
 =item L<MongoDB|WebService::HashiCorp::Vault::Secret::MongoDB>
 
