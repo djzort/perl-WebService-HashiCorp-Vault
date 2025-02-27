@@ -140,11 +140,13 @@ Or whatever object based upon provided backend parameter.
 sub secret {
     my $self = shift;
     my %args = @_;
-    $args{approle}  = $self->approle();
-    $args{token}    = $self->token();
-    $args{version}  = $self->version();
-    $args{base_url} = $self->base_url();
-    $args{ua}       = $self->ua();
+    $args{approle}    = $self->approle();
+    $args{base_url}   = $self->base_url();
+    $args{log_method} = $self->log_method();
+    $args{logger}     = $self->logger();
+    $args{token}      = $self->token();
+    $args{ua}         = $self->ua();
+    $args{version}    = $self->version();
 
     $args{backend} ||= 'generic';
     die sprintf( "Unknown backend type: %s\n", $args{backend} )
