@@ -1,5 +1,9 @@
 WebService::HashiCorp::Vault - perl API for HashiCorp's Vault
 
+0.04 2025-03-20
+- Fix issues with class generation GH#14 thanks @XSven
+- Fix pod typo thanks @mcorvax via GH#17
+
 0.03 2023-07-11
 - Relicense to MIT
 - Fix issues in Kvv2 backend thanks @dennisjbell via GH#16
